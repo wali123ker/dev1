@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <header>
+        <h1>WALID</h1>
+        <img src="{% static 'images/django1.jpg' %}" alt="Logo del sitio" width="200">
+    </header>
+
+    <main>
+        <p>Ejemplo pagina cr: WALID.</p>
+        <button id="btn">Haz clic</button>
+    </main>
+
+    <script src="{% static 'js/script.js' %}"></script>
+</body>
+</html>
