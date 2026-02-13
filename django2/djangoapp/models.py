@@ -19,3 +19,11 @@ class Book(models.Model):
 
     def __str__(self):
         return self.title
+    
+class UserProfile(models.Model):
+    name = models.CharField(max_length=50)
+    mail = models.CharField(max_length=100)
+    propic = models.ImageField(upload_to='profile_pics/', default='default_user.png', blank=True)
+
+    def __str__(self):
+        return self.name

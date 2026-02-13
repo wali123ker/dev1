@@ -1,10 +1,12 @@
+app_name = "djangoapp"
+
 from django.urls import path, include
-from djangoapp.views import home, app_page
+from .views import home, app_page, person
+
+app_name = "djangoapp"
 
 urlpatterns = [
     path('', home, name='home'),
     path('app/', app_page, name='app_page'),
-
-    path("__reload__/", include("django_browser_reload.urls")),
+    path('<slug:slug>/', person, name='person'),
 ]
-

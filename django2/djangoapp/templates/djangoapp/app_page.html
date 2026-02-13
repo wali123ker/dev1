@@ -3,20 +3,19 @@
 {% block title %}Página de la App{% endblock %}
 
 {% block content %}
-<div class="container mt-8 bg-white p-6 rounded-xl shadow">
+<div class="container mt-8 bg-white p-6 rounded-xl shadow text-gray-900">
     <h1 class="text-6xl font-bold text-gray-900 mb-6 text-center">Página de la App</h1>
 
-    <h2 class="text-3xl font-semibold mb-4">Libros</h2>
-    <ul class="list-disc ml-8">
+    <h2 class="text-3xl font-semibold text-gray-800 mb-4">Libros</h2>
+    <ul class="list-disc ml-8 text-gray-900 space-y-2">
         {% for book in books %}
             <li>{{ book.title }} - Autor: {{ book.person.name }}</li>
         {% empty %}
             <li>No hay libros registrados.</li>
         {% endfor %}
     </ul>
-
-    <h2 class="text-3xl font-semibold mt-6 mb-4">Hobbies</h2>
-    <ul class="list-disc ml-8">
+    <h2 class="text-3xl font-semibold text-gray-800 mt-6 mb-4">Hobbies</h2>
+    <ul class="list-disc ml-8 text-gray-900 space-y-2">
         {% for hobby in hobbies %}
             <li>{{ hobby.title }} - Personas: 
                 {% for person in hobby.persons.all %}
@@ -27,9 +26,19 @@
             <li>No hay hobbies registrados.</li>
         {% endfor %}
     </ul>
-
+    <h2 class="text-3xl font-semibold mb-4">Usuarios</h2>
+    <ul class="list-disc ml-8">
+    {% for user in users %}
+        <li>
+            <p>{{ user.name }} - {{ user.mail }}</p>
+            <img src="{{ user.propic.url }}" alt="{{ user.name }}" class="w-32 h-32 object-cover rounded-full mt-2 mb-4" style="max-width:200px;">
+        </li>
+    {% empty %}
+        <li>No hay usuarios registrados.</li>
+    {% endfor %}
+    </ul>
     <div class="text-center mt-8">
-        <a href="/" class="btn btn-blue">Volver al inicio</a>
+      <a href="{% url 'djangoapp:home' %}" class="btn btn-blue">Volver al inicio</a>
     </div>
 </div>
 {% endblock %}
