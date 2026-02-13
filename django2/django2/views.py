@@ -1,3 +1,3 @@
 from django.shortcuts import render
 def djangoapp(request):
- return render(request, 'djangoapp/home.html')
+ return render(request, 'djangoapp/homepage.html')

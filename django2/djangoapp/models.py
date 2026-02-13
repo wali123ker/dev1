@@ -1,3 +1,21 @@
 from django.db import models
 
-# Create your models here.
+class Person(models.Model):
+    name = models.CharField(max_length=50)
+    birth = models.DateField()
+    slug = models.SlugField()
+
+    def __str__(self):
+        return self.name
+class Hobby(models.Model):
+    title = models.CharField(max_length=50)
+    persons = models.ManyToManyField(Person)
+
+    def __str__(self):
+        return self.title
+class Book(models.Model):
+    title = models.CharField(max_length=100)
+    person = models.ForeignKey(Person, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.title

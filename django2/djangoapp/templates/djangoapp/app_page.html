@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %}Página de la App{% endblock %}
+
+{% block content %}
+<div class="container mt-8 bg-white p-6 rounded-xl shadow">
+    <h1 class="text-6xl font-bold text-gray-900 mb-6 text-center">Página de la App</h1>
+
+    <h2 class="text-3xl font-semibold mb-4">Libros</h2>
+    <ul class="list-disc ml-8">
+        {% for book in books %}
+            <li>{{ book.title }} - Autor: {{ book.person.name }}</li>
+        {% empty %}
+            <li>No hay libros registrados.</li>
+        {% endfor %}
+    </ul>
+
+    <h2 class="text-3xl font-semibold mt-6 mb-4">Hobbies</h2>
+    <ul class="list-disc ml-8">
+        {% for hobby in hobbies %}
+            <li>{{ hobby.title }} - Personas: 
+                {% for person in hobby.persons.all %}
+                    {{ person.name }}{% if not forloop.last %}, {% endif %}
+                {% endfor %}
+            </li>
+        {% empty %}
+            <li>No hay hobbies registrados.</li>
+        {% endfor %}
+    </ul>
+
+    <div class="text-center mt-8">
+        <a href="/" class="btn btn-blue">Volver al inicio</a>
+    </div>
+</div>
+{% endblock %}
