@@ -18,3 +18,13 @@ def app_page(request):
 def person(request, slug):
     my_person = Person.objects.get(slug=slug)
     return render(request, "djangoapp/person.html", {"person": my_person})
+
+def register_view(request):
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            form.save() 
+        form = UserCreationForm()
+    
+    return render(request, 'users/register.html', {'form': form})
+

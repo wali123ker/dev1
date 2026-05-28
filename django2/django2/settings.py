@@ -35,6 +35,7 @@ INSTALLED_APPS = [
     'django.contrib.admin',
     'tailwind',
     'theme',
+    'users',
     'django_browser_reload',
     'django.contrib.auth',
     'django.contrib.contenttypes',
