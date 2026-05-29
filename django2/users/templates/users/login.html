@@ -1,11 +1,11 @@
 {% extends "base.html" %}
 
-{% block title %}Registro{% endblock %}
+{% block title %}Login{% endblock %}
 
 {% block content %}
 <div class="max-w-md mx-auto mt-10 bg-white p-8 rounded-xl shadow">
-    <h1 class="text-4xl font-bold text-gray-900 mb-6 text-center">Formulario de Registro</h1>
-    <form action='/users/register/' method='post'>
+    <h1 class="text-4xl font-bold text-gray-900 mb-6 text-center">Iniciar Sesión</h1>
+    <form action='/users/login/' method='post'>
         {% csrf_token %}
         <style>
             input[type="text"], input[type="password"] {
@@ -28,13 +28,16 @@
             ul { color: #ef4444; font-size: 0.85rem; margin-bottom: 8px; }
             p { color: #374151; font-size: 0.85rem; margin-bottom: 4px; }
         </style>
+        {% if request.GET.next %}
+            <input type='hidden' name='next' value='{{ request.GET.next }}'>
+        {% endif %}
         {{ form.as_p }}
-  <button type="submit" style="background-color:#ffffff; color:#000000 !important;" class="w-full mt-4 px-6 py-2 rounded hover:opacity-90 font-semibold">
-    Registrarse
-</button>
+        <button type="submit" style="background-color:#ffffff; color:#000000 !important;" class="w-full mt-4 px-6 py-2 rounded hover:opacity-90 font-semibold">
+        Entrar
+        </button>
     </form>
     <p class="text-center mt-4 text-gray-600">
-        ¿Ya tienes cuenta? <a href="{% url 'users:login' %}" class="text-blue-600 hover:underline">Inicia sesión</a>
+        ¿No tienes cuenta? <a href="{% url 'users:register' %}" class="text-blue-600 hover:underline">Regístrate</a>
     </p>
 </div>
 {% endblock %}
