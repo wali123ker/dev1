@@ -1,12 +1,11 @@
-app_name = "djangoapp"
-
-from django.urls import path, include
-from .views import home, app_page, person
+from django.urls import path
+from . import views
 
 app_name = "djangoapp"
 
 urlpatterns = [
-    path('', home, name='home'),
-    path('app/', app_page, name='app_page'),
-    path('<slug:slug>/', person, name='person'),
+    path('', views.home, name='home'),
+    path('app/', views.app_page, name='app_page'),
+    path('products/', views.products_list, name='products_list'),
+    path('<slug:slug>/', views.person, name='person'),
 ]
