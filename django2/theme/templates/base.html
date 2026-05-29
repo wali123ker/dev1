@@ -4,43 +4,42 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>
-        {% block title %}
-        Mi Sitio Django
-        {% endblock title %}
-    </title>
+    <title>{% block title %}Mi Sitio Django{% endblock title %}</title>
     {% tailwind_css %}
 </head>
 
-<body class="bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-200">
+<body class="bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-200 min-h-screen flex flex-col">
 
-    <nav class="bg-white dark:bg-gray-800 shadow p-4 flex gap-4 items-center justify-between">
-        <div class="flex gap-4">
-            <a href="{% url 'djangoapp:home' %}" class="hover:underline font-semibold">Inicio</a>
-            <a href="{% url 'djangoapp:app_page' %}" class="hover:underline">App</a>
+    <nav class="bg-white dark:bg-gray-800 shadow-md px-6 py-3 flex items-center justify-between">
+        <div class="flex items-center gap-6">
+            <a href="{% url 'djangoapp:home' %}" class="text-xl font-bold text-blue-700 dark:text-blue-400 tracking-tight">🐍 DjangoApp</a>
+            <a href="{% url 'djangoapp:home' %}" class="text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-blue-600 transition">Inicio</a>
+            <a href="{% url 'djangoapp:app_page' %}" class="text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-blue-600 transition">App</a>
             {% if user.is_authenticated %}
-                <a href="{% url 'djangoapp:products_list' %}" class="hover:underline">Mis Productos</a>
+                <a href="{% url 'djangoapp:products_list' %}" class="text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-blue-600 transition">Productos</a>
             {% endif %}
         </div>
-        <div class="flex gap-4 items-center">
+        <div class="flex items-center gap-4">
             {% if user.is_authenticated %}
-                <span class="text-sm text-gray-600 dark:text-gray-300">👤 {{ user.username }}</span>
-                <form action="{% url 'users:logout' %}" method='post'>
+                <span class="text-sm bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200 px-3 py-1 rounded-full font-medium">👤 {{ user.username }}</span>
+                <form action="{% url 'users:logout' %}" method="post" style="display:inline;">
                     {% csrf_token %}
-                    <button class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 text-sm">Logout</button>
+                    <button style="background-color:#ef4444; color:#ffffff;" class="text-sm px-4 py-1.5 rounded-lg hover:opacity-80 font-semibold transition">Cerrar sesión</button>
                 </form>
             {% else %}
-                <a href="{% url 'users:login' %}" class="text-blue-600 hover:underline text-sm">Login</a>
-                <a href="{% url 'users:register' %}" class="bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700 text-sm">Registro</a>
+                <a href="{% url 'users:login' %}" class="text-sm font-medium text-blue-600 hover:underline">Iniciar sesión</a>
+                <a href="{% url 'users:register' %}" style="background-color:#2563eb; color:#ffffff;" class="text-sm px-4 py-1.5 rounded-lg hover:opacity-80 font-semibold transition">Registrarse</a>
             {% endif %}
         </div>
     </nav>
 
-    <main class="max-w-3xl mx-auto mt-8 p-6">
-        {% block content %}
-        Contenido por defecto
-        {% endblock content %}
+    <main class="max-w-4xl mx-auto w-full mt-10 px-4 pb-12 flex-1">
+        {% block content %}{% endblock content %}
     </main>
+
+    <footer class="bg-white dark:bg-gray-800 border-t text-center text-xs text-gray-400 py-4 mt-auto">
+        Walid - Djangoapp
+    </footer>
 
 </body>
 </html>
