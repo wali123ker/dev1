@@ -1,6 +1,40 @@
-<h1 class="text-8xl font-[Times New Roman]">Registro</h1>
-<form class='text-center' action='/users/register/' method='post'>
-    {% csrf_token %}
-    {{ form }}
-    <button type="submit">Submit formulario</button>
-</form>
+{% extends "base.html" %}
+
+{% block title %}Registro{% endblock %}
+
+{% block content %}
+<div class="max-w-md mx-auto mt-10 bg-white p-8 rounded-xl shadow">
+    <h1 class="text-4xl font-bold text-gray-900 mb-6 text-center">Formulario de Registro</h1>
+    <form action='/users/register/' method='post'>
+        {% csrf_token %}
+        <style>
+            input[type="text"], input[type="password"] {
+                display: block;
+                width: 100%;
+                padding: 8px 12px;
+                margin: 6px 0 16px 0;
+                border: 1px solid #d1d5db;
+                border-radius: 6px;
+                color: #111827 !important;
+                background-color: #ffffff !important;
+                font-size: 1rem;
+            }
+            label {
+                color: #374151 !important;
+                font-weight: 600;
+                display: block;
+                margin-top: 8px;
+            }
+            ul { color: #ef4444; font-size: 0.85rem; margin-bottom: 8px; }
+            p { color: #374151; font-size: 0.85rem; margin-bottom: 4px; }
+        </style>
+        {{ form.as_p }}
+        <button type="submit" class="w-full mt-4 bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 font-semibold">
+            Registrarse
+        </button>
+    </form>
+    <p class="text-center mt-4 text-gray-600">
+        ¿Ya tienes cuenta? <a href="{% url 'users:login' %}" class="text-blue-600 hover:underline">Inicia sesión</a>
+    </p>
+</div>
+{% endblock %}

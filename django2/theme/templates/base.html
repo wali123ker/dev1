@@ -1,32 +1,42 @@
 {% load static tailwind_tags %}
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <title>
         {% block title %}
-        Default Title
+        Mi Sitio Django
         {% endblock title %}
     </title>
-
     {% tailwind_css %}
 </head>
 
 <body class="bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-200">
 
-    <nav class="bg-white dark:bg-gray-800 shadow p-4 flex gap-4">
-        <a href="{% url 'djangoapp:home' %}" class="hover:underline">Inicio</a>
-        <a href="{% url 'djangoapp:app_page' %}" class="hover:underline">Pagina de la App/a>
+    <nav class="bg-white dark:bg-gray-800 shadow p-4 flex gap-4 items-center justify-between">
+        <div class="flex gap-4">
+            <a href="{% url 'djangoapp:home' %}" class="hover:underline font-semibold">Inicio</a>
+            <a href="{% url 'djangoapp:app_page' %}" class="hover:underline">App</a>
+        </div>
+        <div class="flex gap-4 items-center">
+            {% if user.is_authenticated %}
+                <span class="text-sm text-gray-600 dark:text-gray-300">👤 {{ user.username }}</span>
+                <form action="{% url 'users:logout' %}" method="post" style="display:inline;">
+                    {% csrf_token %}
+                    <button class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 text-sm">Logout</button>
+                </form>
+            {% else %}
+                <a href="{% url 'users:login' %}" class="text-blue-600 hover:underline text-sm">Login</a>
+                <a href="{% url 'users:register' %}" class="bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700 text-sm">Registro</a>
+            {% endif %}
+        </div>
     </nav>
 
     <main class="max-w-3xl mx-auto mt-8 p-6">
         {% block content %}
-        Default content
         {% endblock content %}
     </main>
 
 </body>
 </html>
-
-
