@@ -2,6 +2,33 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from .models import Person, Book, Hobby, UserProfile, Product
 from .forms import UploadProduct
+from comments.forms import CommentForm
+from comments.models import Comment
+
+@login_required(login_url="/users/login/")
+def product_detail(request, pk):
+    from .models import Product
+    product = Product.objects.get(pk=pk)
+    comments = product.comments.all().order_by('-created_at')
+    form = CommentForm()
+    return render(request, 'djangoapp/product_detail.html', {
+        'product': product,
+        'comments': comments,
+        'form': form,
+    })
+
+@login_required(login_url="/users/login/")
+def add_comment(request, pk):
+    from .models import Product
+    product = Product.objects.get(pk=pk)
+    if request.method == 'POST':
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.author = request.user
+            comment.product = product
+            comment.save()
+    return redirect('djangoapp:product_detail', pk=product.pk)
 
 def home(request):
     person_list = Person.objects.all()
@@ -33,7 +60,7 @@ def products_list(request):
     else:
         form = UploadProduct()
     
-    product_list = Product.objects.all()[:20]
+    product_list = Product.objects.all().order_by('-date_published')[:20]
     return render(request, 'djangoapp/products.html', {
         'product_list': product_list,
         'form': form
