@@ -31,9 +31,19 @@ def add_comment(request, pk):
     return redirect('djangoapp:product_detail', pk=product.pk)
 
 def home(request):
+    from django.contrib.auth.models import User
     person_list = Person.objects.all()
-    return render(request, "djangoapp/home.html", {'persons': person_list})
-
+    book_list = Book.objects.all()
+    hobby_list = Hobby.objects.all()
+    return render(request, "djangoapp/home.html", {
+        'persons': person_list,
+        'books': book_list,
+        'hobbies': hobby_list,
+        'product_count': Product.objects.count(),
+        'user_count': User.objects.count(),
+        'person_count': person_list.count(),
+    })
+    
 def app_page(request):
     book_list = Book.objects.all()
     hobby_list = Hobby.objects.all()

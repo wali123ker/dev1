@@ -1,19 +1,153 @@
 {% extends "base.html" %}
-
-{% block title %}Pagina de Inicio{% endblock %}
+{% block title %}Inicio — DjangoApp{% endblock %}
 
 {% block content %}
-<h1 class="text-6xl font-bold text-center mb-6">Pagina de Inicio</h1>
-<p class="text-center text-stone-900 dark:text-gray-300">Bienvenido a la pagina de inicio</p>
 
-<h2 class="text-3xl font-semibold mt-8 mb-4">Listado de Personas</h2>
-<ul class="list-disc ml-8">
-    {% for person in persons %}
-        <li>
-            <a href="{% url 'djangoapp:person' slug=person.slug %}" class="text-blue-600 hover:underline">
-                {{ person.name }} ({{ person.birth }})
-            </a>
-        </li>
-    {% endfor %}
-</ul>
+<!-- HERO -->
+<div class="rounded-2xl overflow-hidden mb-10 relative"
+     style="background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 60%, #3b82f6 100%); min-height: 260px;">
+    <div class="px-10 py-14 relative z-10">
+        <h1 class="text-5xl font-extrabold text-white mb-4 leading-tight">
+            Bienvenido <br> al Blog.
+        </h1>
+        <p class="text-blue-100 text-lg mb-8 max-w-lg">
+           Publique sus productos y comparta sus ideas con la comunidad
+            Explora personas, libros, hobbies y productos.
+        </p>
+        <div class="flex gap-3 flex-wrap">
+            {% if user.is_authenticated %}
+                <a href="{% url 'djangoapp:products_list' %}"
+                   style="background:#ffffff; color:#1e40af;"
+                   class="px-6 py-2.5 rounded-xl font-bold text-sm hover:opacity-90 transition">
+                    📦 Ver Productos
+                </a>
+                <a href="{% url 'djangoapp:app_page' %}"
+                   style="border:2px solid rgba(255,255,255,0.6); color:#ffffff;"
+                   class="px-6 py-2.5 rounded-xl font-bold text-sm hover:bg-white hover:bg-opacity-10 transition">
+                    🗂 Explorar App
+                </a>
+            {% else %}
+                <a href="{% url 'users:register' %}"
+                   style="background:#ffffff; color:#1e40af;"
+                   class="px-6 py-2.5 rounded-xl font-bold text-sm hover:opacity-90 transition">
+                    🚀 Registrarse
+                </a>
+                <a href="{% url 'users:login' %}"
+                   style="border:2px solid rgba(255,255,255,0.6); color:#ffffff;"
+                   class="px-6 py-2.5 rounded-xl font-bold text-sm hover:bg-white hover:bg-opacity-10 transition">
+                    Iniciar sesión
+                </a>
+            {% endif %}
+        </div>
+    </div>
+    <div style="position:absolute; top:-40px; right:-40px; width:220px; height:220px;
+                background:rgba(255,255,255,0.07); border-radius:50%;"></div>
+    <div style="position:absolute; bottom:-60px; right:80px; width:160px; height:160px;
+                background:rgba(255,255,255,0.05); border-radius:50%;"></div>
+</div>
+
+<!-- STATS -->
+<div class="grid grid-cols-3 gap-4 mb-10">
+    <div class="bg-white dark:bg-gray-800 rounded-2xl shadow p-5 text-center">
+        <div class="text-4xl font-extrabold text-blue-600 mb-1">{{ person_count }}</div>
+        <div class="text-sm text-gray-500 dark:text-gray-400 font-medium">👤 Personas</div>
+    </div>
+    <div class="bg-white dark:bg-gray-800 rounded-2xl shadow p-5 text-center">
+        <div class="text-4xl font-extrabold text-green-600 mb-1">{{ product_count }}</div>
+        <div class="text-sm text-gray-500 dark:text-gray-400 font-medium">📦 Productos</div>
+    </div>
+    <div class="bg-white dark:bg-gray-800 rounded-2xl shadow p-5 text-center">
+        <div class="text-4xl font-extrabold text-purple-600 mb-1">{{ user_count }}</div>
+        <div class="text-sm text-gray-500 dark:text-gray-400 font-medium">🙋 Usuarios</div>
+    </div>
+</div>
+
+<!-- PERSONAS -->
+<div class="bg-white dark:bg-gray-800 rounded-2xl shadow p-6 mb-6">
+    <div class="flex items-center justify-between mb-5">
+        <h2 class="text-xl font-bold text-gray-800 dark:text-gray-100">👥 Personas registradas</h2>
+        <span class="text-xs bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-200 px-3 py-1 rounded-full font-semibold">
+            {{ person_count }} total
+        </span>
+    </div>
+    <div class="grid grid-cols-2 gap-3">
+        {% for person in persons %}
+        <a href="{% url 'djangoapp:person' slug=person.slug %}"
+           class="flex items-center gap-3 p-3 rounded-xl border border-gray-100 dark:border-gray-700 hover:border-blue-300 hover:bg-blue-50 dark:hover:bg-gray-700 transition group">
+            <div class="w-10 h-10 rounded-full flex items-center justify-center font-bold text-white text-sm flex-shrink-0"
+                 style="background: linear-gradient(135deg, #2563eb, #7c3aed);">
+                {{ person.name|first|upper }}
+            </div>
+            <div>
+                <div class="font-semibold text-gray-800 dark:text-gray-100 group-hover:text-blue-600 text-sm transition">
+                    {{ person.name }}
+                </div>
+                <div class="text-xs text-gray-400">{{ person.birth|date:"d/m/Y" }}</div>
+            </div>
+        </a>
+        {% empty %}
+        <p class="text-gray-400 text-sm col-span-2 text-center py-4">
+            No hay personas aún. Añade una desde el
+            <a href="/admin/" class="text-blue-500 hover:underline">panel admin</a>.
+        </p>
+        {% endfor %}
+    </div>
+</div>
+
+<!-- HOBBIES + LIBROS -->
+<div class="grid grid-cols-2 gap-6 mb-6">
+    <div class="bg-white dark:bg-gray-800 rounded-2xl shadow p-6">
+        <h2 class="text-xl font-bold text-gray-800 dark:text-gray-100 mb-4">🎯 Hobbies</h2>
+        <div class="flex flex-wrap gap-2">
+            {% for hobby in hobbies %}
+            <span class="px-3 py-1.5 rounded-full text-sm font-semibold"
+                  style="background:#ede9fe; color:#5b21b6;">
+                {{ hobby.title }}
+            </span>
+            {% empty %}
+            <p class="text-gray-400 text-sm">No hay hobbies registrados.</p>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="bg-white dark:bg-gray-800 rounded-2xl shadow p-6">
+        <h2 class="text-xl font-bold text-gray-800 dark:text-gray-100 mb-4">📚 Libros</h2>
+        <ul class="space-y-2">
+            {% for book in books %}
+            <li class="flex items-center gap-2 text-sm text-gray-700 dark:text-gray-300">
+                <span class="w-2 h-2 rounded-full bg-green-400 flex-shrink-0"></span>
+                <span class="font-medium">{{ book.title }}</span>
+                <span class="text-gray-400 text-xs ml-auto">— {{ book.person.name }}</span>
+            </li>
+            {% empty %}
+            <p class="text-gray-400 text-sm">No hay libros registrados.</p>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+
+<!-- CTA FINAL -->
+{% if not user.is_authenticated %}
+<div class="rounded-2xl p-8 text-center"
+     style="background: linear-gradient(135deg, #f0fdf4, #dcfce7);">
+    <h3 class="text-2xl font-bold text-green-800 mb-2">¿Quieres publicar productos?</h3>
+    <p class="text-green-700 mb-5 text-sm">Regístrate para acceder a la sección de productos y publicar los tuyos.</p>
+    <a href="{% url 'users:register' %}"
+       style="background:#16a34a; color:#ffffff;"
+       class="px-8 py-3 rounded-xl font-bold text-sm hover:opacity-90 transition inline-block">
+        Crear cuenta gratis →
+    </a>
+</div>
+{% else %}
+<div class="rounded-2xl p-8 text-center"
+     style="background: linear-gradient(135deg, #eff6ff, #dbeafe);">
+    <h3 class="text-2xl font-bold text-blue-800 mb-2">Hola de nuevo, {{ user.username }} 👋</h3>
+    <p class="text-blue-700 mb-5 text-sm">Tienes acceso completo a la plataforma.</p>
+    <a href="{% url 'djangoapp:products_list' %}"
+       style="background:#2563eb; color:#ffffff;"
+       class="px-8 py-3 rounded-xl font-bold text-sm hover:opacity-90 transition inline-block">
+        Ir a Productos →
+    </a>
+</div>
+{% endif %}
+
 {% endblock %}

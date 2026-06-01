@@ -12,7 +12,7 @@
 
     <nav class="bg-white dark:bg-gray-800 shadow-md px-6 py-3 flex items-center justify-between">
         <div class="flex items-center gap-6">
-            <a href="{% url 'djangoapp:home' %}" class="text-xl font-bold text-blue-700 dark:text-blue-400 tracking-tight">🐍 DjangoApp</a>
+            <a href="{% url 'djangoapp:home' %}" class="text-xl font-bold text-blue-700 dark:text-blue-400 tracking-tight">BlogApp</a>
             <a href="{% url 'djangoapp:home' %}" class="text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-blue-600 transition">Inicio</a>
             <a href="{% url 'djangoapp:app_page' %}" class="text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-blue-600 transition">App</a>
             {% if user.is_authenticated %}
