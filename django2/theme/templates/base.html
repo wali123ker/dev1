@@ -18,6 +18,7 @@
             {% if user.is_authenticated %}
                 <a href="{% url 'djangoapp:products_list' %}" class="text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-blue-600 transition">Productos</a>
                 <a href="{% url 'weather:weather' %}" class="text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-blue-600 transition">🌤 Tiempo</a>
+                <a href="{% url 'chatbot:chatbot' %}" class="text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-blue-600 transition">🤖 IA</a>
             {% endif %}
         </div>
         <div class="flex items-center gap-4">

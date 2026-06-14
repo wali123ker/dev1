@@ -25,7 +25,8 @@ urlpatterns = [
     path("users/", include("users.urls")),
     path("games/", include("games.urls")),  
     path('api/', include('api.urls')),
-    path('weather/', include('weather.urls')),  
+    path('weather/', include('weather.urls')),
+    path('chatbot/', include('chatbot.urls')),  
     path('', include('djangoapp.urls')),      
 ]
 
