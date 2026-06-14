@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'games',
     'rest_framework',
     'api',
+    'weather',
     'django_browser_reload',
     'django.contrib.auth',
     'django.contrib.contenttypes',

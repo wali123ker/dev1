@@ -23,9 +23,10 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path("__reload__/", include("django_browser_reload.urls")),
     path("users/", include("users.urls")),
-    path("games/", include("games.urls")), 
-    path('', include('djangoapp.urls')), 
-    path('api/', include('api.urls')),        
+    path("games/", include("games.urls")),  
+    path('api/', include('api.urls')),
+    path('weather/', include('weather.urls')),  
+    path('', include('djangoapp.urls')),      
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
