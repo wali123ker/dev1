@@ -2,54 +2,35 @@
 {% block title %}{{ game.room_name }}{% endblock %}
 
 {% block content %}
+{{ game.room_name|json_script:"room_name_data" }}
+{{ request.user.username|json_script:"current_user_data" }}
+{{ game.owner.username|json_script:"owner_data" }}
+
 <div class="bg-white dark:bg-gray-800 rounded-2xl shadow p-6 max-w-md mx-auto">
     <div class="text-center mb-6">
         <h1 class="text-2xl font-extrabold text-gray-800 dark:text-gray-100">🏠 {{ game.room_name }}</h1>
         <p class="text-sm text-gray-500 mt-1">Sala de {{ game.owner }}</p>
-
-        {% if game.state == 'won' %}
-        <div class="mt-3 bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-100
-                    px-4 py-2 rounded-xl font-bold">
-            🏆 ¡Ha ganado {{ game.winner }}!
+        <div id="status-msg" class="mt-3 px-4 py-2 rounded-xl font-bold text-sm
+            {% if game.state == 'won' %}bg-green-100 text-green-800
+            {% elif game.state == 'tie' %}bg-yellow-100 text-yellow-800
+            {% else %}bg-blue-100 text-blue-700{% endif %}">
+            {% if game.state == 'won' %}🏆 ¡Ha ganado {{ game.winner }}!
+            {% elif game.state == 'tie' %}🤝 ¡Empate!
+            {% else %}Turno del jugador {{ game.active_player }}{% endif %}
         </div>
-        {% elif game.state == 'tie' %}
-        <div class="mt-3 bg-yellow-100 text-yellow-800 px-4 py-2 rounded-xl font-bold">
-            🤝 ¡Empate!
-        </div>
-        {% else %}
-        <p class="mt-3 text-sm font-medium text-blue-600">
-            Turno del jugador {{ game.active_player }}
-            {% if game.owner == request.user %}— ¡Es tu turno!{% else %}— Solo el creador puede jugar{% endif %}
-        </p>
-        {% endif %}
     </div>
 
     <!-- TABLERO -->
-    {% if game.state == 'active' and game.owner == request.user %}
-    <form method="post">
-        {% csrf_token %}
-        <div class="grid grid-cols-3 gap-2 mb-6">
-            {% for cell in board %}
-            <button type="submit" name="square" value="{{ forloop.counter0 }}"
-                    {% if cell %}disabled{% endif %}
-                    class="h-20 text-4xl font-bold rounded-xl border-2 transition
-                    {% if cell %}border-gray-200 dark:border-gray-600 cursor-not-allowed bg-gray-50 dark:bg-gray-700
-                    {% else %}border-blue-300 hover:bg-blue-50 dark:hover:bg-gray-700 bg-white dark:bg-gray-800{% endif %}">
-                {{ cell }}
-            </button>
-            {% endfor %}
-        </div>
-    </form>
-    {% else %}
-    <div class="grid grid-cols-3 gap-2 mb-6">
+    <div id="board" class="grid grid-cols-3 gap-2 mb-6">
         {% for cell in board %}
-        <div class="h-20 text-4xl font-bold rounded-xl border-2 border-gray-200 dark:border-gray-600
-                    flex items-center justify-center bg-gray-50 dark:bg-gray-700">
+        <button data-idx="{{ forloop.counter0 }}"
+                class="cell-btn h-20 text-4xl font-bold rounded-xl border-2 transition
+                       border-blue-300 hover:bg-blue-50 dark:hover:bg-gray-700
+                       bg-white dark:bg-gray-800 {% if cell %}cursor-not-allowed{% endif %}">
             {{ cell }}
-        </div>
+        </button>
         {% endfor %}
     </div>
-    {% endif %}
 
     <div class="flex gap-3">
         <a href="{% url 'games:game_list' %}"
@@ -58,16 +39,82 @@
                   hover:bg-gray-100 dark:hover:bg-gray-700 transition">
             ← Volver
         </a>
-        {% if game.owner == request.user and game.state != 'active' %}
-        <form method="post" action="{% url 'games:game_delete' game.room_name %}" class="flex-1">
-            {% csrf_token %}
-            <button type="submit"
-                    style="background:#ef4444; color:#fff;"
-                    class="w-full py-2 rounded-xl text-sm font-bold hover:opacity-80 transition">
-                🗑 Cerrar sala
-            </button>
-        </form>
-        {% endif %}
+        <button id="delete-btn" style="display:none; background:#ef4444; color:#fff;"
+                class="flex-1 py-2 rounded-xl text-sm font-bold hover:opacity-80 transition">
+            🗑 Cerrar sala
+        </button>
     </div>
 </div>
+
+<script>
+    const roomName = JSON.parse(document.getElementById('room_name_data').textContent);
+    const currentUser = JSON.parse(document.getElementById('current_user_data').textContent);
+    const ownerName = JSON.parse(document.getElementById('owner_data').textContent);
+    const isOwner = currentUser === ownerName;
+
+    const socket = new WebSocket('ws://' + window.location.host + '/ws/games/' + roomName + '/');
+
+    socket.onopen = function() {
+        console.log('Conectado al WebSocket');
+    };
+
+    socket.onmessage = function(e) {
+        const data = JSON.parse(e.data);
+
+        if (data.type === 'update') {
+            updateBoard(data.board);
+            updateStatus(data.state, data.active_player, data.winner);
+        } else if (data.type === 'deleted') {
+            window.location.href = "{% url 'games:game_list' %}";
+        }
+    };
+
+    socket.onclose = function() {
+        console.log('WebSocket desconectado');
+    };
+
+    function updateBoard(board) {
+        const buttons = document.querySelectorAll('.cell-btn');
+        buttons.forEach((btn, idx) => {
+            btn.textContent = board[idx];
+            if (board[idx]) {
+                btn.classList.add('cursor-not-allowed');
+                btn.disabled = true;
+            }
+        });
+    }
+
+    function updateStatus(state, activePlayer, winner) {
+        const msg = document.getElementById('status-msg');
+        msg.className = 'mt-3 px-4 py-2 rounded-xl font-bold text-sm';
+
+        if (state === 'won') {
+            msg.classList.add('bg-green-100', 'text-green-800');
+            msg.textContent = '🏆 ¡Ha ganado ' + winner + '!';
+            if (isOwner) document.getElementById('delete-btn').style.display = 'block';
+        } else if (state === 'tie') {
+            msg.classList.add('bg-yellow-100', 'text-yellow-800');
+            msg.textContent = '🤝 ¡Empate!';
+            if (isOwner) document.getElementById('delete-btn').style.display = 'block';
+        } else {
+            msg.classList.add('bg-blue-100', 'text-blue-700');
+            msg.textContent = 'Turno del jugador ' + activePlayer;
+        }
+    }
+
+    // Clicks en el tablero
+    document.querySelectorAll('.cell-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            if (!isOwner) return;
+            const idx = this.getAttribute('data-idx');
+            if (this.textContent.trim() !== '') return;
+            socket.send(JSON.stringify({ action: 'move', square: idx }));
+        });
+    });
+
+    // Botón cerrar sala
+    document.getElementById('delete-btn').addEventListener('click', function() {
+        socket.send(JSON.stringify({ action: 'delete' }));
+    });
+</script>
 {% endblock %}

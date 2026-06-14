@@ -9,8 +9,9 @@ class Game(models.Model):
         ('tie', 'Empate'),
     ]
     room_name = models.SlugField(max_length=50, unique=True)
-    owner = models.ForeignKey(User, on_delete=models.CASCADE)
-    board = models.TextField(default=json.dumps(['' ] * 9))
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='owned_games')
+    player2 = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='joined_games')
+    board = models.TextField(default=json.dumps(['']*9))
     active_player = models.IntegerField(default=1)
     state = models.CharField(max_length=6, choices=STATE_CHOICES, default='active')
     winner = models.CharField(max_length=50, blank=True, null=True)
