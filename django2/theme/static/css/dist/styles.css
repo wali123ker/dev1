@@ -8,11 +8,14 @@
     --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
       "Courier New", monospace;
     --color-red-500: oklch(63.7% 0.237 25.331);
+    --color-yellow-100: oklch(97.3% 0.071 103.193);
+    --color-yellow-800: oklch(47.6% 0.114 61.907);
     --color-green-100: oklch(96.2% 0.044 156.743);
     --color-green-400: oklch(79.2% 0.209 151.711);
     --color-green-600: oklch(62.7% 0.194 149.214);
     --color-green-700: oklch(52.7% 0.154 150.069);
     --color-green-800: oklch(44.8% 0.119 151.328);
+    --color-green-900: oklch(39.3% 0.095 152.535);
     --color-blue-50: oklch(97% 0.014 254.604);
     --color-blue-100: oklch(93.2% 0.032 255.585);
     --color-blue-200: oklch(88.2% 0.059 254.128);
@@ -244,6 +247,9 @@
   .mt-2 {
     margin-top: calc(var(--spacing) * 2);
   }
+  .mt-3 {
+    margin-top: calc(var(--spacing) * 3);
+  }
   .mt-4 {
     margin-top: calc(var(--spacing) * 4);
   }
@@ -358,6 +364,9 @@
   .flex-shrink-0 {
     flex-shrink: 0;
   }
+  .cursor-not-allowed {
+    cursor: not-allowed;
+  }
   .resize-none {
     resize: none;
   }
@@ -466,6 +475,9 @@
   .border-blue-200 {
     border-color: var(--color-blue-200);
   }
+  .border-blue-300 {
+    border-color: var(--color-blue-300);
+  }
   .border-gray-100 {
     border-color: var(--color-gray-100);
   }
@@ -492,6 +504,9 @@
   }
   .bg-white {
     background-color: var(--color-white);
+  }
+  .bg-yellow-100 {
+    background-color: var(--color-yellow-100);
   }
   .object-cover {
     object-fit: cover;
@@ -555,6 +570,9 @@
   }
   .py-6 {
     padding-block: calc(var(--spacing) * 6);
+  }
+  .py-8 {
+    padding-block: calc(var(--spacing) * 8);
   }
   .py-10 {
     padding-block: calc(var(--spacing) * 10);
@@ -685,6 +703,9 @@
   .text-white {
     color: var(--color-white);
   }
+  .text-yellow-800 {
+    color: var(--color-yellow-800);
+  }
   .shadow {
     --tw-shadow: 0 1px 3px 0 var(--tw-shadow-color, rgb(0 0 0 / 0.1)), 0 1px 2px -1px var(--tw-shadow-color, rgb(0 0 0 / 0.1));
     box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
@@ -720,6 +741,11 @@
   @media (hover: hover) {
     .hover\:bg-gray-50:hover {
       background-color: var(--color-gray-50);
+    }
+  }
+  @media (hover: hover) {
+    .hover\:bg-gray-100:hover {
+      background-color: var(--color-gray-100);
     }
   }
   @media (hover: hover) {
@@ -805,6 +831,11 @@
     }
   }
   @media (prefers-color-scheme: dark) {
+    .dark\:bg-green-900 {
+      background-color: var(--color-green-900);
+    }
+  }
+  @media (prefers-color-scheme: dark) {
     .dark\:text-blue-200 {
       color: var(--color-blue-200);
     }
@@ -837,6 +868,11 @@
   @media (prefers-color-scheme: dark) {
     .dark\:text-gray-500 {
       color: var(--color-gray-500);
+    }
+  }
+  @media (prefers-color-scheme: dark) {
+    .dark\:text-green-100 {
+      color: var(--color-green-100);
     }
   }
   @media (prefers-color-scheme: dark) {

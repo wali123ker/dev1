@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'theme',
     'users',
     'comments',
+    'games',
     'django_browser_reload',
     'django.contrib.auth',
     'django.contrib.contenttypes',
