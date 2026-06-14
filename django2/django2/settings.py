@@ -169,3 +169,5 @@ class MyDefaultFormRenderer(TemplatesSetting):
     form_template_name = "default_form_snippet.html"
 
 FORM_RENDERER = "django2.settings.MyDefaultFormRenderer"
+
+GOOGLE_ANALYTICS_MEASUREMENT_ID = os.environ.get('GOOGLE_ANALYTICS_MEASUREMENT_ID', '')
