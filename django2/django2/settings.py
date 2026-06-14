@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     'users',
     'comments',
     'games',
+    'rest_framework',
+    'api',
     'django_browser_reload',
     'django.contrib.auth',
     'django.contrib.contenttypes',
