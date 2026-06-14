@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'djangoapp',
+    'django.forms',
 ]
 
 MIDDLEWARE = [
@@ -155,3 +156,9 @@ CHANNEL_LAYERS = {
     },
 }
 
+from django.forms.renderers import TemplatesSetting
+
+class MyDefaultFormRenderer(TemplatesSetting):
+    form_template_name = "default_form_snippet.html"
+
+FORM_RENDERER = "django2.settings.MyDefaultFormRenderer"

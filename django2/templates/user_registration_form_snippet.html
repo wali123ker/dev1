@@ -1,0 +1,37 @@
+{{ form.non_field_errors }}
+
+<div class="mb-4">
+    {{ form.username.errors }}
+    <label for="{{ form.username.id_for_label }}"
+           class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">
+        Nombre de usuario
+    </label>
+    {{ form.username }}
+    {% if form.username.help_text %}
+    <p class="text-gray-400 text-xs mt-1">💡 {{ form.username.help_text }}</p>
+    {% endif %}
+</div>
+
+<div class="mb-4">
+    {{ form.password1.errors }}
+    <label for="{{ form.password1.id_for_label }}"
+           class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">
+        Contraseña
+    </label>
+    {{ form.password1 }}
+    {% if form.password1.help_text %}
+    <p class="text-gray-400 text-xs mt-1 leading-relaxed">💡 {{ form.password1.help_text }}</p>
+    {% endif %}
+</div>
+
+<div class="mb-4">
+    {{ form.password2.errors }}
+    <label for="{{ form.password2.id_for_label }}"
+           class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">
+        Confirmar contraseña
+    </label>
+    {{ form.password2 }}
+    {% if form.password2.help_text %}
+    <p class="text-gray-400 text-xs mt-1">💡 {{ form.password2.help_text }}</p>
+    {% endif %}
+</div>
